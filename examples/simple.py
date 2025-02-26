@@ -1,6 +1,4 @@
 import time
-import sys
-sys.path.append('../qmate')
 from qmate import Queue, Task  # noqa: E402
 
 

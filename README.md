@@ -7,7 +7,7 @@ Create asynchronous and asynchronous task queues that run on a schedule... syman
 ### Full Example
 #### Run the function ```PrintSomething``` every quarter of every minute:
 ```py
-from qmate import Queue
+from qmate import Queue, Task
 import time
 
 

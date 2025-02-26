@@ -6,19 +6,15 @@ on:
       - '*'
 
 jobs:
-  publish:
-    name: Publish Package To PyPI
-    runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/p/qmate
-    permissions:
-      id-token: write
 
+  build:
+    name: Build Package
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
+
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
@@ -38,3 +34,13 @@ jobs:
           path: dist/
     - name: Publish Distribution To PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+
+  publish:
+    needs: build
+    name: Publish Package To PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/qmate
+    permissions:
+      id-token: write
