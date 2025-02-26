@@ -1,0 +1,45 @@
+name: Publish
+
+on:
+  push:
+    tags:        
+      - '*'
+
+jobs:
+  build:
+    name: Build Distribution
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+    
+    - name: Build Package
+      run: |
+        python3 -m pip install build --user
+
+    - name: Build Tarball
+      run: python3 -m build
+
+    - name: Store Package
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish Distribution To PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+  pypi-publish:
+    name: Publish Package To PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/qmate
+    permissions:
+      id-token: write
